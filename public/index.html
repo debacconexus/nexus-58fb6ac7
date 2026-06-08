@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refugee Services Coordination Nexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #07192f;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #07192f;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .igm-status {
+            background-color: #33e0c4;
+            color: #07192f;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .nav {
+            background-color: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background-color: #33e0c4;
+            color: #07192f;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background-color: #2bc5aa;
+        }
+
+        .nav-btn.active {
+            background-color: #ffca58;
+            color: #07192f;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card h3 {
+            color: #07192f;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #33e0c4;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #07192f;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #33e0c4;
+            box-shadow: 0 0 0 3px rgba(51, 224, 196, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .btn-primary {
+            background-color: #33e0c4;
+            color: #07192f;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2bc5aa;
+        }
+
+        .btn-secondary {
+            background-color: #ffca58;
+            color: #07192f;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background-color: #07192f;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-closed {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .footer {
+            background-color: #07192f;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer a {
+            color: #33e0c4;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Refugee Services Coordination Nexus</h1>
+        <div class="igm-status">IGM Status: Connected</div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showSection('dashboard')">Dashboard</button>
+            <button class="nav-btn" onclick="showSection('intake')">Intake Form</button>
+            <button class="nav-btn" onclick="showSection('contacts')">Contact Log</button>
+            <button class="nav-btn" onclick="showSection('search')">Search</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="form-section active">
+            <div class="dashboard-grid">
+                <div class="card stat-card">
+                    <div class="stat-number">247</div>
+                    <div class="stat-label">Total Refugees</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">Active Cases</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Services Provided</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Durable Solutions</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activities</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Refugee ID</th>
+                            <th>Activity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-01-15</td>
+                            <td>REF-2024-001</td>
+                            <td>Initial Assessment</td>
+                            <td><span class="status-badge status-active">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-15</td>
+                            <td>REF-2024-002</td>
+                            <td>Medical Referral</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-01-14</td>
+                            <td>REF-2024-003</td>
+                            <td>Education Enrollment</td>
+                            <td><span class="status-badge status-active">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Intake Form Section -->
+        <section id="intake" class="form-section">
+            <div class="card">
+                <h3>Refugee Intake Form</h3>
+                <form id="intakeForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="refugeeId">Refugee ID</label>
+                            <input type="text" id="refugeeId" class="form-input" placeholder="Auto-generated">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="arrivalDate">Arrival Date</label>
+                            <input type="date" id="arrivalDate" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-input" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-input" placeholder="Enter last name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="gender">Gender</label>
+                            <select id="gender" class="form-input form-select" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer Not to Say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="nationality">Nationality</label>
+                            <input type="text" id="nationality" class="form-input" placeholder="Enter nationality" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="countryOfOrigin">Country of Origin</label>
+                            <input type="text" id="countryOfOrigin" class="form-input" placeholder="Enter country of origin" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="language">Primary Language</label>
+                            <input type="text" id="language" class="form-input" placeholder="Enter primary language">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="familySize">Family Size</label>
+                            <input type="number" id="familySize" class="form-input" placeholder="Number of family members" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="vulnerabilityStatus">Vulnerability Status</label>
+                            <select id="vulnerabilityStatus" class="form-input form-select">
+                                <option value="">Select Status</option>
+                                <option value="none">None</option>
+                                <option value="unaccompanied-minor">Unaccompanied Minor</option>
+                                <option value="elderly">Elderly</option>
+                                <option value="disabled">Disabled</option>
+                                <option value="medical-needs">Medical Needs</option>
+                                <option value="pregnant-lactating">Pregnant/Lactating</option>
+                                <option value="survivor-violence">Survivor of Violence</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="accommodationType">Accommodation Type</label>
+                            <select id="accommodationType" class="form-input form-select">
+                                <option value="">Select Accommodation</option>
+                                <option value="camp">Refugee Camp</option>
+                                <option value="reception-center">Reception Center</option>
+                                <option value="host-community">Host Community</option>
+                                <option value="urban-settlement">Urban Settlement</option>
+                                <option value="transit">Transit Facility</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="immediateNeeds">Immediate Needs Assessment</label>
+                        <textarea id="immediateNeeds" class="form-input form-textarea" placeholder="Describe immediate needs (food, shelter, medical, etc.)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="additionalNotes">Additional Notes</label>
+                        <textarea id="additionalNotes" class="form-input form-textarea" placeholder="Any additional information or observations"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Submit Intake Form</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Contact Log Section -->
+        <section id="contacts" class="form-section">
+            <div class="card">
+                <h3>Contact Log</h3>
+                <div style="margin-bottom: 2rem;">
+                    <button class="btn-secondary" onclick="showAddContact()">Add New Contact</button>
+                </div>
+                
+                <div id="addContactForm" style="display: none; margin-bottom: 2rem; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem;">
+                    <form>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="contactRefugeeId">Refugee ID</label>
+                                <input type="text" id="contactRefugeeId" class="form-input" placeholder="REF-2024-XXX" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactDate">Contact Date</label>
+                                <input type="date" id="contactDate" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactType">Contact Type</label>
+                                <select id="contactType" class="form-input form-select" required>
+                                    <option value="">Select Type</option>
+                                    <option value="assessment">Assessment</option>
+                                    <option value="referral">Service Referral</option>
+                                    <option value="follow-up">Follow-up</option>
+                                    <option value="case-management">Case Management</option>
+                                    <option value="documentation">Documentation</option>
+                                    <option value="complaint">Complaint/Concern</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactedBy">Contacted By</label>
+                                <input type="text" id="contactedBy" class="form-input" placeholder="Staff member name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contactNotes">Contact Notes
